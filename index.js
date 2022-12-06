@@ -1,14 +1,9 @@
 const URL = 'https://nodes-on-nodes-challenge.herokuapp.com/nodes/:id';
 const ID = '089ef556-dfff-4ff2-9733-654645be56fe';
-// const ID = 'c20c063c-99b3-452f-a44f-72e2dac4eec0';
-// const ID = '3e82e3c2-4cd1-4cab-91da-899430299c84';
 
-//const ids = new Set();
-//ids.add(ID);
 const ids = {
   [ID]: 1,
 };
-let calls = 0;
 
 async function fetchNodeChildren(id) {
   const response = await fetch(URL.replace(':id', id));
@@ -36,9 +31,18 @@ async function main() {
   const entryChildren = await fetchNodeChildren(ID);
 
   await traverseAndTrackIds(entryChildren);
+  const idEntries = Object.entries(ids);
+  const sortedIdEntries = idEntries.sort((a, b) => b[1] - a[1]);
 
-  console.log(ids);
-  return ids;
+  const [solutionTo1, solutionTo2] = [
+    sortedIdEntries.length,
+    sortedIdEntries[0][0],
+  ];
+
+  console.log('Solution 1:', solutionTo1);
+  console.log('Solution 2:', solutionTo2);
+
+  return [solutionTo1, solutionTo2];
 }
 
 main();
